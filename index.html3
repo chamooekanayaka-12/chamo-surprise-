@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="si">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>For You 💗</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Great+Vibes&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<div class="background">
+
+<div class="heart h1">🤍</div>
+<div class="heart h2">🌸</div>
+<div class="heart h3">💗</div>
+<div class="heart h4">🤍</div>
+<div class="heart h5">🌸</div>
+
+</div>
+
+<div class="container">
+
+<div class="heading">
+
+<div class="emoji">
+💌
+</div>
+
+<h1>
+
+ඔයාට පුංචි තෑග්ගක්
+
+</h1>
+
+<p>
+
+Scratch Here
+
+</p>
+
+<div class="arrow">
+
+⬇
+
+</div>
+
+</div>
+
+<div class="scratch-card">
+
+<div class="note">
+
+<div class="note-inner">
+
+<h2>
+
+🌸
+
+</h2>
+
+<p>
+
+ජීවිතේ හැම දවසක්ම
+එක වගේ ලේසි වෙන්නෙ නෑ...
+
+<br><br>
+
+ඒත්...
+
+මේ දවසත් ගෙවිලා යනවා.
+
+<br><br>
+
+ඔයා හිතනවට වඩා
+ශක්තිමත් කෙනෙක්.
+
+<br><br>
+
+ටිකක් හුස්ම ගන්න...
+
+ටිකක් විවේක ගන්න...
+
+හිනාවෙන්න අමතක කරන්න එපා ❤️
+
+<br><br>
+
+හැමදේම හොඳින්
+සිද්ධ වෙයි...
+
+මම ඒක විශ්වාස කරනවා 🌷
+
+</p>
+
+<h3>
+
+— චමෝ 💗
+
+</h3>
+
+</div>
+
+</div>
+
+<canvas
+id="scratchCanvas">
+
+</canvas>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scratch Card</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+/* Card */
+.card {
+  width: 300px;
+  height: 200px;
+  margin: 80px auto;
+  position: relative;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+/* Canvas scratch layer */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Message */
+.message {
+  font-size: 18px;
+  padding: 60px 20px;
+  color: #333;
+  display: none;
+}
+
+/* Button */
+button {
+  padding: 10px 20px;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+button:hover {
+  background: #e63e5c;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="message" id="message">
+    💌 අද දවස ඔයාට ලස්සන වෙන්නම ඕනෙ 💖<br>
+    I have something special for you ✨
+  </div>
+
+  <canvas id="scratchCanvas" width="300" height="200"></canvas>
+</div>
+
+<button onclick="startScratch()">Start Scratch ❤️</button>
+
+<script>
+const canvas = document.getElementById("scratchCanvas");
+const ctx = canvas.getContext("2d");
+
+let isDrawing = false;
+let rect;
+
+// init scratch layer
+function initScratch() {
+  ctx.globalCompositeOperation = "source-over";
+  ctx.fillStyle = "#c0c0c0";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#333";
+  ctx.font = "18px Arial";
+  ctx.fillText("Scratch Here ❤️", 70, 100);
+}
+
+initScratch();
+
+// start
+function startScratch() {
+  document.getElementById("message").style.display = "block";
+  rect = canvas.getBoundingClientRect();
+}
+
+// resize fix
+window.addEventListener("resize", () => {
+  rect = canvas.getBoundingClientRect();
+});
+
+// scratch function
+canvas.addEventListener("mousedown", () => isDrawing = true);
+canvas.addEventListener("mouseup", () => isDrawing = false);
+canvas.addEventListener("mousemove", scratch);
+
+canvas.addEventListener("touchstart", () => isDrawing = true);
+canvas.addEventListener("touchend", () => isDrawing = false);
+canvas.addEventListener("touchmove", scratch);
+
+function scratch(e) {
+  if (!isDrawing) return;
+
+  rect = rect || canvas.getBoundingClientRect();
+
+  let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+  ctx.globalCompositeOperation = "destination-out";
+
+  ctx.beginPath();
+  ctx.arc(x, y, 18, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// prevent scroll on touch
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+}, { passive: false });
+
+</script>
+
+</body>
+</html>
