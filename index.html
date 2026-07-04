@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #fdf2f5; font-family: 'Arial', sans-serif; }
+        
+        .header { text-align: center; margin-bottom: 20px; }
+        .arrow { font-size: 2rem; animation: bounce 1.5s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        .card-wrapper { position: relative; width: 320px; height: 420px; border-radius: 20px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        #message-area { text-align: center; padding: 20px; color: #4a4a4a; background: #fff0f5; border: 2px dashed #ffb6c1; border-radius: 15px; width: 85%; }
+        #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="font-size: 3rem;">💌</div>
+        <h2>ඔයාට පුංචි තෑග්ගක්</h2>
+        <p>Scratch Here</p>
+        <div class="arrow">⬇️</div>
+    </div>
+
+    <!-- Romantic Instrumental Music (Auto-play) -->
+    <iframe width="0" height="0" src="https://www.youtube.com/embed/7maJOI3QMu0?autoplay=1&loop=1&playlist=7maJOI3QMu0" frameborder="0" allow="autoplay"></iframe>
+
+    <div class="card-wrapper">
+        <div id="message-area">
+            <p style="font-size: 1.2rem; line-height: 1.6;">අද ගොඩක් ලස්සන දවසක්.<br>මේ වගේම ඔයාගෙ දවසත්<br>අද ලස්සනම ලස්සන වෙන්න ඕනෙ ❤️</p>
+            <p style="font-size: 1.1rem;"><b>-චමෝ💗-</b></p>
+        </div>
+        <canvas id="scratch-canvas" width="320" height="420"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // හූරන තට්ටුව (අළු පාට)
+        ctx.fillStyle = '#c0c0c0';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let isDrawing = false;
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('touchend', () => isDrawing = false);
+
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchmove', scratch);
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    </script>
+</body>
+</html>
